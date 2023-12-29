@@ -3,10 +3,12 @@ kind: Ingress
 metadata:
   name: hass
   annotations:
-    kubernetes.io/ingress.class: "traefik"
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-  - http:
+  - host: {{ .Values.hostname }}
+    http:
       paths:
       - path: /
         pathType: Prefix
@@ -15,6 +17,10 @@ spec:
             name: hello-world
             port:
               number: 80
+  tls:
+    - secretName: my-host-tls
+      hosts:
+        - {{ .Values.hostname }}
 
 ---
 apiVersion: v1
