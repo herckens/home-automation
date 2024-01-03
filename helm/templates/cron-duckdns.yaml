@@ -10,10 +10,10 @@ spec:
         spec:
           containers:
           - name: duckdns-updater
-            image: busybox
+            image: curlimages/curl:8.5.0
             imagePullPolicy: IfNotPresent
-            command:
+            args:
             - /bin/sh
-            - -c
-            - echo url="https://www.duckdns.org/update?domains={{ .Values.hostnamepantry }}&token={{ .Values.duckdnstoken }}&ip=" | curl -k -K -
+            - -ec
+            - "echo url=\"https://www.duckdns.org/update?domains={{ .Values.hostnamepantry }}&token={{ .Values.duckdnstoken }}&ip=\" | curl -k -K -"
           restartPolicy: OnFailure
