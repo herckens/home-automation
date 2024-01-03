@@ -22,6 +22,8 @@ helm upgrade \
 helm upgrade \
   home helm/ \
   --install \
+  --namespace default \
+  --create-namespace \
   --set hostname=my.dynamicdnshostname.ch \
   --set letsencrypt.email=my.email@gmail.com
 ```
