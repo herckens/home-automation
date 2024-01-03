@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-duckdns
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: duckdns-updater
+            image: busybox
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - echo url="https://www.duckdns.org/update?domains={{ .Values.hostnamepantry }}&token={{ .Values.duckdnstoken }}&ip=" | curl -k -K -
+          restartPolicy: OnFailure

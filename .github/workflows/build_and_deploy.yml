@@ -19,6 +19,7 @@ jobs:
           --namespace default \
           --create-namespace \
           --set letsencrypt.email=${{ secrets.EMAIL_HE }} \
+          --set duckdnstoken=${{ secrets.DUCKDNS_TOKEN }} \
           --set hostname=${{ secrets.HOSTNAME_INTERNETBOX }} \
           --set hostnamepantry=${{ secrets.HOSTNAME_PANTRY }} \
           --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }}
