@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: cron-duckdns
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "25 * * * *"
   jobTemplate:
     spec:
       template:
