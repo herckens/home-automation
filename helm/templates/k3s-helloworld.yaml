@@ -4,21 +4,33 @@ metadata:
   name: hass
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - host: {{ .Values.hostname }}
     http:
       paths:
-      - path: /nginx(/|$)(.*)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pantry-api
+            port:
+              number: 8080
+  - host: {{ .Values.hostnamepantry }}
+    http:
+      paths:
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: hello-world
             port:
               number: 80
-      - path: /pantryapi(/|$)(.*)
+  - host: {{ .Values.hostnamepantryapi }}
+    http:
+      paths:
+      - path: /
         pathType: Prefix
         backend:
           service:
@@ -29,6 +41,12 @@ spec:
     - secretName: my-host-tls
       hosts:
         - {{ .Values.hostname }}
+    - secretName: pantryha-tls
+      hosts:
+        - {{ .Values.hostnamepantry }}
+    - secretName: api-pantryha-tls
+      hosts:
+        - {{ .Values.hostnamepantryapi }}
 
 ---
 apiVersion: v1
