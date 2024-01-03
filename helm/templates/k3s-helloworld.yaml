@@ -12,13 +12,19 @@ spec:
     http:
       paths:
       - path: /nginx(/|$)(.*)
-        # pathType: ImplementationSpecific
         pathType: Prefix
         backend:
           service:
             name: hello-world
             port:
               number: 80
+      - path: /pantryapi(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: pantry-api
+            port:
+              number: 8080
   tls:
     - secretName: my-host-tls
       hosts:
