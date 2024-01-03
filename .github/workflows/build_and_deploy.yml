@@ -1,0 +1,24 @@
+name: Home Automation CI CD
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy_raspi:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Helm Release
+      run: |
+        helm upgrade \
+          home helm/ \
+          --install \
+          --namespace default \
+          --create-namespace \
+          --set letsencrypt.email=${{ secrets.EMAIL_HE }} \
+          --set hostname=${{ secrets.HOSTNAME_INTERNETBOX }} \
+          --set hostnamepantry=${{ secrets.HOSTNAME_PANTRY }} \
+          --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }}
