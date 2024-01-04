@@ -38,20 +38,7 @@ spec:
               mountPath: /mosquitto/log
             - name: localtime
               mountPath: /etc/localtime
-            # - name: secrets-volume
-            #   readOnly: true
-            #   mountPath: /mosquitto/config/passwordfile
-            #   subPath: passwordfile
-          # terminationMessagePath: /dev/termination-log
-          # terminationMessagePolicy: File
-          # imagePullPolicy: Always
       volumes:
-        # - name: mosquitto-conf
-        #   configMap:
-        #     name: mosquitto
-        #     defaultMode: 420
-        # - name: secrets-volume
-        #   emptyDir: {}
         - name: mosquitto-conf
           hostPath:
             path: /home/he/mosquitto/config
@@ -66,16 +53,7 @@ spec:
             path: /etc/localtime
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
-      # dnsPolicy: ClusterFirst
       securityContext: {}
-      # schedulerName: default-scheduler
-  # strategy:
-  #   type: RollingUpdate
-  #   rollingUpdate:
-  #     maxUnavailable: 25%
-  #     maxSurge: 25%
-  # revisionHistoryLimit: 10
-  # progressDeadlineSeconds: 600
 
 ---
 apiVersion: v1
