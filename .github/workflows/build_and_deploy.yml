@@ -22,4 +22,5 @@ jobs:
           --set duckdnstoken=${{ secrets.DUCKDNS_TOKEN }} \
           --set hostname=${{ secrets.HOSTNAME_INTERNETBOX }} \
           --set hostnamepantry=${{ secrets.HOSTNAME_PANTRY }} \
-          --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }}
+          --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }} \
+          --set hostnamehomeassistant=${{ secrets.HOSTNAME_HOMEASSISTANT }}

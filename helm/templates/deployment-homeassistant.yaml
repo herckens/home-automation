@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      containers:
+      - name: homeassistant
+        image: ghcr.io/home-assistant/home-assistant:2023.11.1
+        env:
+        # - name: PGID
+        #   value: "1000"
+        # - name: PUID
+        #   value: "1000"
+        - name: TZ
+          value: Europe/Zurich
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            - NET_BROADCAST
+        resources:
+          limits:
+            memory: "300Mi"
+          requests:
+            memory: "200Mi"
+        volumeMounts:
+        - name: homeassistant
+          mountPath: /config
+        - name: localtime
+          mountPath: /etc/localtime
+          readOnly: true
+        - name: dbus
+          mountPath: /run/dbus
+          readOnly: true
+      volumes:
+        - name: homeassistant
+          hostPath:
+            path: /home/he/ha
+          # persistentVolumeClaim:
+          #   claimName: pvc-homeassistant
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: dbus
+          hostPath:
+            path: /run/dbus
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant
+spec:
+  selector:
+    app: homeassistant
+  ports:
+  - name: http
+    targetPort: 8123
+    port: 8123

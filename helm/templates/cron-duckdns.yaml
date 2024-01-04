@@ -17,3 +17,24 @@ spec:
             - -ec
             - "echo url=\"https://www.duckdns.org/update?domains={{ .Values.hostnamepantry }}&token={{ .Values.duckdnstoken }}&ip=\" | curl -k -K -"
           restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-duckdns-ha
+spec:
+  schedule: "26 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: duckdns-updater
+            image: curlimages/curl:8.5.0
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -ec
+            - "echo url=\"https://www.duckdns.org/update?domains={{ .Values.hostnamehomeassistant }}&token={{ .Values.duckdnstoken }}&ip=\" | curl -k -K -"
+          restartPolicy: OnFailure

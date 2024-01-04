@@ -37,6 +37,16 @@ spec:
             name: pantry-api
             port:
               number: 8080
+  - host: {{ .Values.hostnamehomeassistant }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homeassistant
+            port:
+              number: 8123
   tls:
     - secretName: my-host-tls
       hosts:
@@ -47,3 +57,6 @@ spec:
     - secretName: api-pantryha-tls
       hosts:
         - {{ .Values.hostnamepantryapi }}
+    - secretName: homeassistant-tls
+      hosts:
+        - {{ .Values.hostnamehomeassistant }}
