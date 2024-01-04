@@ -65,7 +65,7 @@ spec:
   ports:
     - name: zigbee2mqttui
       protocol: TCP
-      port: 31000
+      port: 8080
       targetPort: 8080
       nodePort: 31000
   externalTrafficPolicy: Cluster
