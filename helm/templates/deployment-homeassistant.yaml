@@ -72,8 +72,8 @@ spec:
     app: homeassistant
   ports:
   - name: http
-    targetPort: 8123
     port: 8123
+    targetPort: 8123
 
 ---
 apiVersion: v1
