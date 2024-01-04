@@ -4,7 +4,7 @@ metadata:
   name: homeassistant
   labels:
     app: homeassistant
-    sentinel: 1
+    sentinel: "1"
 spec:
   replicas: 1
   selector:
