@@ -4,7 +4,6 @@ metadata:
   name: homeassistant
   labels:
     app: homeassistant
-    sentinel: "1"
 spec:
   replicas: 1
   selector:
@@ -14,6 +13,7 @@ spec:
     metadata:
       labels:
         app: homeassistant
+        sentinel: "1"
     spec:
       containers:
       - name: homeassistant
@@ -88,4 +88,4 @@ spec:
       # Optional field
       # By default and for convenience, the Kubernetes control plane
       # will allocate a port from a range (default: 30000-32767)
-      nodePort: 30007
+      nodePort: 30008
