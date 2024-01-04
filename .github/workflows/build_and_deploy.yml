@@ -23,4 +23,5 @@ jobs:
           --set hostname=${{ secrets.HOSTNAME_INTERNETBOX }} \
           --set hostnamepantry=${{ secrets.HOSTNAME_PANTRY }} \
           --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }} \
-          --set hostnamehomeassistant=${{ secrets.HOSTNAME_HOMEASSISTANT }}
+          --set hostnamehomeassistant=${{ secrets.HOSTNAME_HOMEASSISTANT }} \
+          --set hostnamezigbee2mqtt=${{ secrets.HOSTNAME_ZIGBEE2MQTT }}
