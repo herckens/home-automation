@@ -19,10 +19,10 @@ spec:
       - name: homeassistant
         image: ghcr.io/home-assistant/home-assistant:2023.11.1
         env:
-        # - name: PGID
-        #   value: "1000"
-        # - name: PUID
-        #   value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: PUID
+          value: "1000"
         - name: TZ
           value: Europe/Zurich
         securityContext:
@@ -49,8 +49,6 @@ spec:
         - name: homeassistant
           hostPath:
             path: /home/he/ha
-          # persistentVolumeClaim:
-          #   claimName: pvc-homeassistant
         - name: localtime
           hostPath:
             path: /etc/localtime
@@ -82,10 +80,5 @@ spec:
     app:  homeassistant
   ports:
     - port: 8123
-      # By default and for convenience, the `targetPort` is set to
-      # the same value as the `port` field.
       targetPort: 8123
-      # Optional field
-      # By default and for convenience, the Kubernetes control plane
-      # will allocate a port from a range (default: 30000-32767)
       nodePort: 30008
