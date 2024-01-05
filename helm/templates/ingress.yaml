@@ -47,16 +47,16 @@ spec:
             name: homeassistant
             port:
               number: 8123
-  - host: {{ .Values.hostnamezigbee2mqtt }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: zigbee2mqtt
-            port:
-              number: 8080
+  # - host: {{ .Values.hostnamezigbee2mqtt }}
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: zigbee2mqtt
+  #           port:
+  #             number: 8080
   tls:
     - secretName: my-host-tls
       hosts:
@@ -70,6 +70,6 @@ spec:
     - secretName: homeassistant-tls
       hosts:
         - {{ .Values.hostnamehomeassistant }}
-    - secretName: zigbee2mqtt-tls
-      hosts:
-        - {{ .Values.hostnamezigbee2mqtt }}
+    # - secretName: zigbee2mqtt-tls
+    #   hosts:
+    #     - {{ .Values.hostnamezigbee2mqtt }}
