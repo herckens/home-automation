@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         app: zigbee2mqtt
-        sentinel: "1"
+        sentinel: "2"
     spec:
       containers:
         - name: zigbee2mqtt
