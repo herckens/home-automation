@@ -56,7 +56,6 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
-      nodeName: raspi5b1
       securityContext: {}
 
 ---
