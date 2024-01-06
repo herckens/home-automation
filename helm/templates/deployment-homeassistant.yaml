@@ -56,6 +56,15 @@ spec:
         - name: dbus
           hostPath:
             path: /run/dbus
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: floor
+                operator: In
+                values:
+                - eg
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       hostNetwork: true
