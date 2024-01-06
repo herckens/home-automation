@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zigbee2mqtt-basement
+  labels:
+    app: zigbee2mqtt-basement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zigbee2mqtt-basement
+  template:
+    metadata:
+      labels:
+        app: zigbee2mqtt-basement
+        sentinel: "2"
+    spec:
+      containers:
+        - name: zigbee2mqtt
+          image: koenkk/zigbee2mqtt:1.33.2
+          env:
+            - name: TZ
+              value: Europe/Zurich
+          resources:
+            limits:
+              cpu: 500m
+              memory: 200Mi
+          volumeMounts:
+            - name: dev-usb0
+              mountPath: /dev/ttyACM0
+            - name: zigbee2mqttdata
+              mountPath: /app/data
+            - name: runudev-local
+              mountPath: /run/udev
+          securityContext:
+            privileged: true
+      volumes:
+        - name: dev-usb0
+          hostPath:
+            path: /dev/ttyACM0
+        - name: zigbee2mqttdata
+          hostPath:
+            path: /home/he/zigbee2mqtt
+        - name: runudev-local
+          hostPath:
+            path: /run/udev
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: floor
+                operator: In
+                values:
+                - basement
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zigbee2mqtt-basement-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: zigbee2mqtt-basement
+  ports:
+    - name: zigbee2mqttbasementui
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 31000
+  externalTrafficPolicy: Cluster
