@@ -25,7 +25,7 @@ spec:
               - key: floor
                 operator: In
                 values:
-                - eg
+                - basement
       #   volumeMounts:
       #   - name: hello-world-volume
       #     mountPath: /usr/share/nginx/html
