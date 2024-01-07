@@ -54,6 +54,8 @@ spec:
                 values:
                 - basement
       restartPolicy: Always
+      strategy:
+        type: Recreate
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
       securityContext: {}

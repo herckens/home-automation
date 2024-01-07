@@ -52,6 +52,8 @@ spec:
           hostPath:
             path: /etc/localtime
       restartPolicy: Always
+      strategy:
+        type: Recreate
       terminationGracePeriodSeconds: 30
       securityContext: {}
 
