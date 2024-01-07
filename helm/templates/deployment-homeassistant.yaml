@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: homeassistant
-        image: ghcr.io/home-assistant/home-assistant:2023.11.1
+        image: ghcr.io/home-assistant/home-assistant:{{ .Values.homeassistant.image.tag }}
         env:
         # - name: PGID
         #   value: "1000"
