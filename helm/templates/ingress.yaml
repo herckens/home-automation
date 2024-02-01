@@ -24,9 +24,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hello-world
+            name: pantry-web
             port:
-              number: 80
+              number: 8080
   - host: {{ .Values.hostnamepantryapi }}
     http:
       paths:
