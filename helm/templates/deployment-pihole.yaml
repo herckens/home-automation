@@ -84,12 +84,12 @@ spec:
   - name: dns
     port: 53
     targetPort: dns
-    nodePort: 53
+    # nodePort: 53
     protocol: TCP
   - name: dns-udp
     port: 53
     targetPort: dns-udp
-    nodePort: 53
+    # nodePort: 53
     protocol: UDP
   - name: pihole-http
     port: 80
