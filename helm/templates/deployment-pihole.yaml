@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+      - name: pihole
+        image: pihole/pihole:latest
+        env:
+        # - name: ServerIP
+        #   value: 192.168.1.101
+        - name: WEBPASSWORD
+          value: "password"
+        - name: TZ
+          value: Europe/Zurich
+        #   valueFrom:
+        #     secretKeyRef:
+        #       key: password
+        #       name: pihole-webpassword
+        ports:
+        - containerPort: 80
+          name: pihole-http
+          protocol: TCP
+        # - containerPort: 443
+        #   name: pihole-ssl
+        #   protocol: TCP
+        - containerPort: 53
+          name: dns
+          protocol: TCP
+        - containerPort: 53
+          name: dns-udp
+          protocol: UDP
+        # Only needed if you want to use pihole as DHCP server
+        # - containerPort: 67
+        #   name: client-udp
+        #   protocol: UDP
+        resources: {} # TODO
+        volumeMounts:
+        - name: config
+          mountPath: /etc/pihole
+        - name: dnsmasq
+          mountPath: /etc/dnsmasq.d
+      volumes:
+      - name: config
+        hostPath:
+          path: /home/he/pihole/config
+      - name: dnsmasq
+        hostPath:
+          path: /home/he/pihole/dnsmasq
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: floor
+                operator: In
+                values:
+                - eg
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-tcp
+spec:
+  type: NodePort
+  selector:
+    app: pihole
+  ports:
+  - name: dns
+    port: 53
+    targetPort: dns
+    nodePort: 53
+    protocol: TCP
+  - name: dns-udp
+    port: 53
+    targetPort: dns-udp
+    nodePort: 53
+    protocol: UDP
+  - name: pihole-http
+    port: 80
+    targetPort: pihole-http
+    nodePort: 30009
+    protocol: TCP
+  externalTrafficPolicy: Local
