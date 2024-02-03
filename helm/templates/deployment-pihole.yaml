@@ -36,9 +36,11 @@ spec:
         #   name: pihole-ssl
         #   protocol: TCP
         - containerPort: 53
+          hostPort: 53
           name: dns
           protocol: TCP
         - containerPort: 53
+          hostPort: 53
           name: dns-udp
           protocol: UDP
         # Only needed if you want to use pihole as DHCP server
