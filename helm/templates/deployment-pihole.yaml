@@ -40,7 +40,7 @@ spec:
           name: dns
           protocol: TCP
         - containerPort: 53
-          hostPort: 53
+          # hostPort: 53
           name: dns-udp
           protocol: UDP
         # Only needed if you want to use pihole as DHCP server
@@ -99,3 +99,22 @@ spec:
     nodePort: 30009
     protocol: TCP
   externalTrafficPolicy: Local
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-dns-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: pihole
+  ports:
+    - name: dns
+      port: 53
+      targetPort: 53
+      protocol: TCP
+    - name: dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
