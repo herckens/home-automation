@@ -5,7 +5,7 @@ homeassistant:
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
-    tag: 1.35.1
+    tag: 1.35.2
 mosquitto:
   image:
     # https://hub.docker.com/_/eclipse-mosquitto/tags

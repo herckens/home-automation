@@ -19,10 +19,6 @@ spec:
       - name: homeassistant
         image: ghcr.io/home-assistant/home-assistant:{{ .Values.homeassistant.image.tag }}
         env:
-        # - name: PGID
-        #   value: "1000"
-        # - name: PUID
-        #   value: "1000"
         - name: TZ
           value: Europe/Zurich
         securityContext:
