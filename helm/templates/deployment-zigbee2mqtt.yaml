@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: zigbee2mqtt
   labels:
@@ -13,13 +13,8 @@ spec:
     metadata:
       labels:
         app: zigbee2mqtt
-        sentinel: "2"
+        sentinel: "1"
     spec:
-      initContainers:
-        # Wait for the /dev/ttyACM0 device to be available
-        - name: wait
-          image: busybox
-          command: ['sh', '-c', 'sleep 10']
       containers:
         - name: zigbee2mqtt
           image: koenkk/zigbee2mqtt:{{ .Values.zigbee2mqtt.image.tag }}
@@ -59,8 +54,6 @@ spec:
                 values:
                 - eg
       restartPolicy: Always
-      strategy:
-        type: Recreate
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
       securityContext: {}
