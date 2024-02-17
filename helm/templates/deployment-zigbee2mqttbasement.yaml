@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: zigbee2mqtt-basement
   labels:
@@ -15,11 +15,11 @@ spec:
         app: zigbee2mqtt-basement
         sentinel: "2"
     spec:
-      initContainers:
-        # Wait for the /dev/ttyACM0 device to be available
-        - name: wait
-          image: busybox
-          command: ['sh', '-c', 'sleep 10']
+      # initContainers:
+      #   # Wait for the /dev/ttyACM0 device to be available
+      #   - name: wait
+      #     image: busybox
+      #     command: ['sh', '-c', 'sleep 10']
       containers:
         - name: zigbee2mqtt
           image: koenkk/zigbee2mqtt:{{ .Values.zigbee2mqtt.image.tag }}
@@ -59,8 +59,8 @@ spec:
                 values:
                 - basement
       restartPolicy: Always
-      strategy:
-        type: Recreate
+      # strategy:
+      #   type: Recreate
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
       securityContext: {}
