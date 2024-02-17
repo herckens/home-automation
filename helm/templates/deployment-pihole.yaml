@@ -18,29 +18,18 @@ spec:
       - name: pihole
         image: pihole/pihole:latest
         env:
-        # - name: ServerIP
-        #   value: 192.168.1.101
         - name: WEBPASSWORD
           value: "password"
         - name: TZ
           value: Europe/Zurich
-        #   valueFrom:
-        #     secretKeyRef:
-        #       key: password
-        #       name: pihole-webpassword
         ports:
         - containerPort: 80
           name: pihole-http
           protocol: TCP
-        # - containerPort: 443
-        #   name: pihole-ssl
-        #   protocol: TCP
         - containerPort: 53
-          # hostPort: 53
           name: dns
           protocol: TCP
         - containerPort: 53
-          # hostPort: 53
           name: dns-udp
           protocol: UDP
         # Only needed if you want to use pihole as DHCP server
@@ -86,12 +75,10 @@ spec:
   - name: dns
     port: 53
     targetPort: dns
-    # nodePort: 53
     protocol: TCP
   - name: dns-udp
     port: 53
     targetPort: dns-udp
-    # nodePort: 53
     protocol: UDP
   - name: pihole-http
     port: 80
