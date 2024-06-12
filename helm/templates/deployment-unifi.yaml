@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi
+  labels:
+    app: unifi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi
+  template:
+    metadata:
+      labels:
+        app: unifi
+    spec:
+      containers:
+      - name: unifi
+        image: jacobalberty/unifi:{{ .Values.unifi.image.tag }}
+        env:
+        - name: TZ
+          value: Europe/Zurich
+        ports:
+        - containerPort: 8080
+          name: unifi-http
+          protocol: TCP
+        - containerPort: 8443
+          name: unifi-https
+          protocol: TCP
+        - containerPort: 3478
+          name: unifi-udp
+          protocol: UDP
+        resources: {} # TODO
+        volumeMounts:
+        - name: config
+          mountPath: /unifi
+      volumes:
+      - name: config
+        hostPath:
+          path: /home/he/unifi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: floor
+                operator: In
+                values:
+                - eg
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-tcp
+spec:
+  type: NodePort
+  selector:
+    app: unifi
+  ports:
+  - name: unifi-http
+    port: 8080
+    targetPort: unifi-http
+    nodePort: 8080
+    protocol: TCP
+  - name: unifi-https
+    port: 8443
+    targetPort: unifi-https
+    nodePort: 8443
+    protocol: TCP
+  - name: unifi-udp
+    port: 3478
+    targetPort: unifi-udp
+    nodePort: 3478
+    protocol: UDP
+  externalTrafficPolicy: Local
