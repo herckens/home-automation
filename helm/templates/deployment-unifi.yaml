@@ -49,6 +49,8 @@ spec:
                 - eg
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       securityContext: {}
 
 ---
@@ -64,16 +66,16 @@ spec:
   - name: unifi-http
     port: 8080
     targetPort: unifi-http
-    nodePort: 8080
+    nodePort: 30010
     protocol: TCP
   - name: unifi-https
     port: 8443
     targetPort: unifi-https
-    nodePort: 8443
+    nodePort: 30011
     protocol: TCP
   - name: unifi-udp
     port: 3478
     targetPort: unifi-udp
-    nodePort: 3478
+    nodePort: 30012
     protocol: UDP
   externalTrafficPolicy: Local
