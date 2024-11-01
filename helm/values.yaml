@@ -5,11 +5,11 @@ homeassistant:
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
-    tag: 1.40.0
+    tag: 1.41.0
 mosquitto:
   image:
     # https://hub.docker.com/_/eclipse-mosquitto/tags
-    tag: 2.0.18
+    tag: 2.0.20
 pihole:
   image:
     # https://hub.docker.com/r/pihole/pihole/tags
