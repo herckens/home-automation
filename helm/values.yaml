@@ -1,7 +1,7 @@
 homeassistant:
   image:
     # https://hub.docker.com/r/homeassistant/home-assistant/tags
-    tag: 2025.1.0
+    tag: 2025.1.2
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
