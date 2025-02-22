@@ -7,16 +7,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: {{ .Values.hostname }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: pantry-api
-            port:
-              number: 8080
+  # Commenting this out because we are not using it and maybe in conflicts with hostnamepantryapi
+  # - host: {{ .Values.hostname }}
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: pantry-api
+  #           port:
+  #             number: 8080
   - host: {{ .Values.hostnamepantry }}
     http:
       paths:
@@ -48,9 +49,9 @@ spec:
             port:
               number: 8123
   tls:
-    - secretName: my-host-tls
-      hosts:
-        - {{ .Values.hostname }}
+    # - secretName: my-host-tls
+    #   hosts:
+    #     - {{ .Values.hostname }}
     - secretName: pantryha-tls
       hosts:
         - {{ .Values.hostnamepantry }}
