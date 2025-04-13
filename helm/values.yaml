@@ -2,6 +2,10 @@ homeassistant:
   image:
     # https://hub.docker.com/r/homeassistant/home-assistant/tags
     tag: 2025.4.1
+esphome:
+  image:
+    # https://hub.docker.com/r/esphome/esphome/tags
+    tag: 2025.2.2
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
