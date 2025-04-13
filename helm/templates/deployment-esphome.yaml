@@ -92,4 +92,4 @@ spec:
   ports:
     - port: 6052
       targetPort: 6052
-      nodePort: 30009
+      nodePort: 30006
