@@ -27,11 +27,6 @@ spec:
           value: {{ .Values.esphome.password }}
         securityContext:
           privileged: true
-          # capabilities:
-          #   add:
-          #   - NET_ADMIN
-          #   - NET_RAW
-          #   - NET_BROADCAST
         resources:
           limits:
             memory: "1200Mi"
