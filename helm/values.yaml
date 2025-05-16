@@ -22,3 +22,7 @@ unifi:
   image:
     # https://hub.docker.com/r/jacobalberty/unifi/tags
     tag: v8.6.9
+changedetectionio:
+  image:
+    # https://hub.docker.com/r/dgtlmoon/changedetection.io/tags
+    tag: 0.49.17
