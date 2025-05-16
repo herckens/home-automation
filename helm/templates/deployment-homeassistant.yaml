@@ -30,9 +30,9 @@ spec:
             - NET_BROADCAST
         resources:
           limits:
-            memory: "800Mi"
+            memory: "1000Mi"
           requests:
-            memory: "400Mi"
+            memory: "700Mi"
         volumeMounts:
         - name: homeassistant
           mountPath: /config
