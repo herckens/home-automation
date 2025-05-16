@@ -25,9 +25,9 @@ spec:
           privileged: true
         resources:
           limits:
-            memory: "500Mi"
-          requests:
             memory: "300Mi"
+          requests:
+            memory: "150Mi"
         volumeMounts:
         - name: changedetectionio
           mountPath: /datastore
