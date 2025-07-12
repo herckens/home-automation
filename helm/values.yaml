@@ -1,7 +1,7 @@
 homeassistant:
   image:
     # https://hub.docker.com/r/homeassistant/home-assistant/tags
-    tag: 2025.6.3
+    tag: 2025.7.1
 esphome:
   image:
     # https://hub.docker.com/r/esphome/esphome/tags
