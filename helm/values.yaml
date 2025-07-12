@@ -13,7 +13,7 @@ zigbee2mqtt:
 mosquitto:
   image:
     # https://hub.docker.com/_/eclipse-mosquitto/tags
-    tag: 2.0.20
+    tag: 2.0.22
 pihole:
   image:
     # https://hub.docker.com/r/pihole/pihole/tags
