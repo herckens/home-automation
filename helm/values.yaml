@@ -5,7 +5,7 @@ homeassistant:
 esphome:
   image:
     # https://hub.docker.com/r/esphome/esphome/tags
-    tag: 2025.8.1
+    tag: 2025.8.3
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
