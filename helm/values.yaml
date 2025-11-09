@@ -5,11 +5,11 @@ homeassistant:
 esphome:
   image:
     # https://hub.docker.com/r/esphome/esphome/tags
-    tag: 2025.10.3
+    tag: 2025.10.4
 zigbee2mqtt:
   image:
     # https://hub.docker.com/r/koenkk/zigbee2mqtt/tags
-    tag: 2.6.2
+    tag: 2.6.3
 mosquitto:
   image:
     # https://hub.docker.com/_/eclipse-mosquitto/tags
