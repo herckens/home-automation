@@ -24,4 +24,12 @@ jobs:
           --set hostnamepantry=${{ secrets.HOSTNAME_PANTRY }} \
           --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }} \
           --set hostnamehomeassistant=${{ secrets.HOSTNAME_HOMEASSISTANT }} \
-          --set esphome.password=${{ secrets.ESPHOME_PASSWORD }}
+          --set esphome.password=${{ secrets.ESPHOME_PASSWORD }} \
+          --set cloudflare.enabled=true \
+          --set cloudflare.secretName=cloudflare-ddns \
+          --set cloudflare.secretKey=apiToken \
+          --set cloudflare.apiToken=${{ secrets.CLOUDFLARE_API_TOKEN }} \
+          --set cloudflare.zoneId=${{ secrets.CLOUDFLARE_ZONE_ID }} \
+          --set cloudflare.recordId=${{ secrets.CLOUDFLARE_RECORD_ID }} \
+          --set cloudflare.recordName=${{ secrets.CLOUDFLARE_RECORD_NAME }} \
+          --set cloudflare.proxied=false

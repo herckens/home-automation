@@ -1,0 +1,41 @@
+{{- if .Values.cloudflare.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-cloudflare-ddns
+spec:
+  schedule: {{ default "*/10 * * * *" .Values.cloudflare.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cloudflare-ddns-updater
+            image: curlimages/curl:8.5.0
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: CF_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "cloudflare-ddns" .Values.cloudflare.secretName }}
+                  key: {{ default "apiToken" .Values.cloudflare.secretKey }}
+            - name: CF_ZONE_ID
+              value: {{ required "cloudflare.zoneId is required when cloudflare.enabled=true" .Values.cloudflare.zoneId | quote }}
+            - name: CF_RECORD_ID
+              value: {{ required "cloudflare.recordId is required when cloudflare.enabled=true" .Values.cloudflare.recordId | quote }}
+            - name: CF_RECORD_NAME
+              value: {{ required "cloudflare.recordName is required when cloudflare.enabled=true" .Values.cloudflare.recordName | quote }}
+            - name: CF_PROXIED
+              value: {{ default "false" .Values.cloudflare.proxied | quote }}
+            args:
+            - /bin/sh
+            - -ec
+            - |
+              WAN_IP="$(curl -fsS https://api64.ipify.org)"
+              echo "Updating Cloudflare record ${CF_RECORD_NAME} to ${WAN_IP}"
+              curl -fsS -X PATCH "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}" \
+                -H "Authorization: Bearer ${CF_API_TOKEN}" \
+                -H "Content-Type: application/json" \
+                --data "{\"type\":\"A\",\"name\":\"${CF_RECORD_NAME}\",\"content\":\"${WAN_IP}\",\"ttl\":120,\"proxied\":${CF_PROXIED}}"
+          restartPolicy: OnFailure
+{{- end }}
