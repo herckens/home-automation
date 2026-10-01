@@ -24,8 +24,12 @@ spec:
               value: Europe/Zurich
             - name: STORAGE_PATH
               value: /data
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: LISTEN_ADDRESS
-              value: 192.168.5.123
+              value: "$(HOST_IP)"
             - name: PRIMARY_INTERFACE
               value: {{ .Values.thread.infraInterface | quote }}
           securityContext:
