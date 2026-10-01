@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter-server
+  labels:
+    app: matter-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matter-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: matter-server
+    spec:
+      containers:
+        - name: matter-server
+          image: ghcr.io/matter-js/matterjs-server:{{ .Values.matterServer.image.tag }}
+          env:
+            - name: TZ
+              value: Europe/Zurich
+            - name: STORAGE_PATH
+              value: /data
+            - name: LISTEN_ADDRESS
+              value: 192.168.5.123
+            - name: PRIMARY_INTERFACE
+              value: {{ .Values.thread.infraInterface | quote }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: matter-server-data
+              mountPath: /data
+      volumes:
+        - name: matter-server-data
+          hostPath:
+            path: /home/he/matter-server
+            type: Directory
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: floor
+                    operator: In
+                    values:
+                      - eg
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matter-server
+spec:
+  selector:
+    app: matter-server
+  ports:
+    - name: websocket
+      protocol: TCP
+      port: 5580
+      targetPort: 5580
