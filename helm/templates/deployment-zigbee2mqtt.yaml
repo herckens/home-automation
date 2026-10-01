@@ -37,7 +37,7 @@ spec:
       volumes:
         - name: dev-usb0
           hostPath:
-            path: /dev/ttyACM0
+            path: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_DCB4D912E518-if00
         - name: zigbee2mqttdata
           hostPath:
             path: /home/he/zigbee2mqtt
