@@ -117,7 +117,7 @@ kubectl logs -n default deploy/openthread-border-router
 kubectl logs -n default deploy/matter-server
 ```
 
-Both workloads use host networking on the `floor=eg` node. OTBR requires the radio, `/dev/net/tun`, and `NET_ADMIN`. The Matter Server WebSocket and OTBR REST API are not exposed through ingress, but host-networked ports can be reachable on the LAN; restrict access with the Pi's firewall if needed.
+Both workloads use host networking on the `floor=eg` node. OTBR runs privileged so it can access the host serial device and configure Thread networking. Its local web listener uses port `8082` to avoid UniFi's host-networked port `8080`; the REST API listens on the node IP at port `8081` for Home Assistant. The Matter Server WebSocket and OTBR REST API are not exposed through ingress, but host-networked ports can be reachable on the LAN; restrict access with the Pi's firewall if needed.
 
 ## Configure Home Assistant
 
@@ -132,7 +132,8 @@ Both workloads use host networking on the `floor=eg` node. OTBR requires the rad
 
 ## Troubleshooting and recovery
 
-- If OTBR cannot open the radio, verify the new adapter still has the Thread RCP firmware, the by-id path exists on the EG Pi, and the OTBR pod is scheduled on that same node.
+- If OTBR cannot open the radio, verify the new adapter still has the Thread RCP firmware, the by-id path exists on the EG Pi, and the OTBR pod is scheduled on that same node with its privileged security context.
+- If OTBR reports that port `8080` is already in use, check that the updated chart is deployed; its local web listener is moved to port `8082` to avoid UniFi.
 - If OTBR starts but Thread devices cannot join or route traffic, recheck the infrastructure interface and the four sysctl values above.
 - If Home Assistant cannot connect to either service, check that the pods are running and that the Matter Server URL and OTBR REST URL use the service names and ports shown above.
 - Back up `/home/he/otbr`, `/home/he/matter-server`, and the Home Assistant configuration before changing firmware or restoring the chart.
