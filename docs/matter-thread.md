@@ -133,6 +133,7 @@ Both workloads use host networking on the `floor=eg` node. OTBR runs privileged 
 ## Troubleshooting and recovery
 
 - If OTBR cannot open the radio, verify the new adapter still has the Thread RCP firmware, the by-id path exists on the EG Pi, and the OTBR pod is scheduled on that same node with its privileged security context.
+- If `otbr-agent` fails during Spinel `Init()`, check that the UART baud rate matches the flashed firmware. The documented ZBT-2 OpenThread RCP firmware release uses `460800` baud.
 - If OTBR reports that port `8080` is already in use, check that the updated chart is deployed; its local web listener is moved to port `8082` to avoid UniFi.
 - If OTBR starts but Thread devices cannot join or route traffic, recheck the infrastructure interface and the four sysctl values above.
 - If Home Assistant cannot connect to either service, check that the pods are running and that the Matter Server URL and OTBR REST URL use the service names and ports shown above.

@@ -25,7 +25,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: OT_RCP_DEVICE
-              value: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=1000000
+              value: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800
             - name: OT_INFRA_IF
               value: {{ .Values.thread.infraInterface | quote }}
             - name: OT_REST_LISTEN_ADDR
