@@ -20,19 +20,24 @@ spec:
         - name: openthread-border-router
           image: openthread/border-router:{{ .Values.thread.otbr.image.tag }}
           env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: OT_RCP_DEVICE
               value: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=1000000
             - name: OT_INFRA_IF
               value: {{ .Values.thread.infraInterface | quote }}
+            - name: OT_REST_LISTEN_ADDR
+              value: "$(HOST_IP)"
             - name: OT_THREAD_IF
               value: wpan0
+            - name: OT_WEB_LISTEN_PORT
+              value: "8082"
             - name: OT_LOG_LEVEL
               value: "5"
           securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              add:
-                - NET_ADMIN
+            privileged: true
           volumeMounts:
             - name: zbt2-thread-radio
               mountPath: /dev/ttyACM0
