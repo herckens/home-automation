@@ -20,7 +20,6 @@ The old image bundled MongoDB; the new one does not, so the data directory canno
 1. **Check the node.** On the Pi:
    ```sh
    id he              # uid/gid should be 1000, otherwise adjust PUID/PGID in deployment-unifi.yaml
-   getconf PAGESIZE   # 16384 on the Pi 5 default kernel; see Troubleshooting if unifi-db crashes
    ```
 2. **Create the GitHub secrets.** Use alphanumeric values (`,` and `=` break `helm --set`):
    ```sh
@@ -50,5 +49,5 @@ Revert the migration commit and redeploy. The old image starts again on `/home/h
 ## Troubleshooting
 
 - **`unifi` logs show MongoDB authentication errors.** `unifi-db` was initialised with different passwords, or the init script did not run because `/data/db` was not empty. Before the restore you lose nothing by resetting it: `kubectl scale statefulset/unifi-db --replicas=0`, `sudo rm -rf /home/he/unifi-db`, then redeploy.
-- **`unifi-db` crash-loops (segfault / tcmalloc errors).** This is most likely the Pi 5's 16K-page kernel. Switch to the 4K-page kernel by adding `kernel=kernel8.img` to `/boot/firmware/config.txt` and rebooting.
+- **Why MongoDB 7.0 and not 8.x.** `mongo` 8.0.5 and later (including 8.2/8.3) crash-loop with SIGSEGV on arm64 / Raspberry Pi 5 ([docker-library/mongo#762](https://github.com/docker-library/mongo/issues/762), upstream [SERVER-125742](https://jira.mongodb.org/browse/SERVER-125742)). 7.0 is not reported as affected. Move to 8.0 only once a release with the arm64 fix is out and verified on the Pi.
 - **Upgrading MongoDB.** Only move one major version at a time (7.0 → 8.0). After each step, set `featureCompatibilityVersion`. Take a UniFi backup first.
