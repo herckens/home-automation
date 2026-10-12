@@ -16,10 +16,34 @@ spec:
     spec:
       containers:
       - name: unifi
-        image: jacobalberty/unifi:{{ .Values.unifi.image.tag }}
+        image: lscr.io/linuxserver/unifi-network-application:{{ .Values.unifi.image.tag }}
         env:
         - name: TZ
           value: Europe/Zurich
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: MONGO_HOST
+          value: unifi-db
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_DBNAME
+          value: unifi
+        - name: MONGO_AUTHSOURCE
+          value: admin
+        - name: MONGO_USER
+          value: unifi
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: unifi-db
+              key: password
+        # Java heap in MB
+        - name: MEM_LIMIT
+          value: "1024"
+        - name: MEM_STARTUP
+          value: "1024"
         ports:
         - containerPort: 8080
           name: unifi-http
@@ -30,14 +54,22 @@ spec:
         - containerPort: 3478
           name: unifi-udp
           protocol: UDP
-        resources: {} # TODO
+        - containerPort: 10001
+          name: unifi-discovery
+          protocol: UDP
+        resources:
+          requests:
+            memory: 1Gi
+          limits:
+            memory: 2Gi
         volumeMounts:
         - name: config
-          mountPath: /unifi
+          mountPath: /config
       volumes:
       - name: config
         hostPath:
-          path: /home/he/unifi
+          path: /home/he/unifi-network-application
+          type: DirectoryOrCreate
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

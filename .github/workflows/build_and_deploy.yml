@@ -25,6 +25,8 @@ jobs:
           --set hostnamepantryapi=${{ secrets.HOSTNAME_PANTRY_API }} \
           --set hostnamehomeassistant=${{ secrets.HOSTNAME_HOMEASSISTANT }} \
           --set esphome.password=${{ secrets.ESPHOME_PASSWORD }} \
+          --set unifi.mongoPassword=${{ secrets.UNIFI_MONGO_PASSWORD }} \
+          --set unifi.mongoRootPassword=${{ secrets.UNIFI_MONGO_ROOT_PASSWORD }} \
           --set cloudflare.enabled=true \
           --set cloudflare.secretName=cloudflare-ddns \
           --set cloudflare.secretKey=apiToken \

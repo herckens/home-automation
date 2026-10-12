@@ -1,0 +1,137 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: unifi-db
+type: Opaque
+stringData:
+  rootPassword: {{ required "unifi.mongoRootPassword is required" .Values.unifi.mongoRootPassword | quote }}
+  password: {{ required "unifi.mongoPassword is required" .Values.unifi.mongoPassword | quote }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-db-init
+data:
+  # From https://github.com/linuxserver/docker-unifi-network-application#setting-up-your-external-database
+  # Only runs when /data/db is empty, i.e. on first start.
+  init-mongo.sh: |
+    #!/bin/bash
+
+    if which mongosh > /dev/null 2>&1; then
+      mongo_init_bin='mongosh'
+    else
+      mongo_init_bin='mongo'
+    fi
+    "${mongo_init_bin}" <<EOF
+    use ${MONGO_AUTHSOURCE}
+    db.auth("${MONGO_INITDB_ROOT_USERNAME}", "${MONGO_INITDB_ROOT_PASSWORD}")
+    db.createUser({
+      user: "${MONGO_USER}",
+      pwd: "${MONGO_PASS}",
+      roles: [
+        "clusterMonitor",
+        { db: "${MONGO_DBNAME}", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_audit", role: "dbOwner" },
+        { db: "${MONGO_DBNAME}_restore", role: "dbOwner" }
+      ]
+    })
+    EOF
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unifi-db
+  labels:
+    app: unifi-db
+spec:
+  replicas: 1
+  serviceName: unifi-db
+  selector:
+    matchLabels:
+      app: unifi-db
+  template:
+    metadata:
+      labels:
+        app: unifi-db
+    spec:
+      containers:
+      - name: unifi-db
+        image: mongo:{{ .Values.unifiDb.image.tag }}
+        # Cap the WiredTiger cache; the default (50% of RAM - 1 GB) is far more than UniFi needs on the Pi.
+        args: ["--wiredTigerCacheSizeGB", "0.25"]
+        env:
+        - name: TZ
+          value: Europe/Zurich
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: root
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: unifi-db
+              key: rootPassword
+        - name: MONGO_USER
+          value: unifi
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: unifi-db
+              key: password
+        - name: MONGO_DBNAME
+          value: unifi
+        - name: MONGO_AUTHSOURCE
+          value: admin
+        ports:
+        - containerPort: 27017
+          name: mongodb
+          protocol: TCP
+        resources:
+          requests:
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+        - name: init
+          mountPath: /docker-entrypoint-initdb.d/init-mongo.sh
+          subPath: init-mongo.sh
+          readOnly: true
+      volumes:
+      - name: data
+        hostPath:
+          path: /home/he/unifi-db
+          type: DirectoryOrCreate
+      - name: init
+        configMap:
+          name: unifi-db-init
+          defaultMode: 0555
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: floor
+                operator: In
+                values:
+                - eg
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-db
+spec:
+  type: ClusterIP
+  selector:
+    app: unifi-db
+  ports:
+  - name: mongodb
+    port: 27017
+    targetPort: mongodb
+    protocol: TCP

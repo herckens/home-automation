@@ -20,8 +20,17 @@ pihole:
     tag: 2026.09.0
 unifi:
   image:
-    # https://hub.docker.com/r/jacobalberty/unifi/tags
-    tag: v8.6.9
+    # https://hub.docker.com/r/linuxserver/unifi-network-application/tags
+    tag: 10.6.106-ls149
+  # Set via --set unifi.mongoPassword=... / unifi.mongoRootPassword=...
+  # Changing them later has no effect on an already initialised database.
+  mongoPassword: ""
+  mongoRootPassword: ""
+unifiDb:
+  image:
+    # https://hub.docker.com/_/mongo/tags
+    # Pin the major version: MongoDB does not upgrade across majors automatically.
+    tag: 7.0.43
 changedetectionio:
   image:
     # https://hub.docker.com/r/dgtlmoon/changedetection.io/tags

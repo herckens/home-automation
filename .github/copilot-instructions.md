@@ -8,7 +8,7 @@
 - Preserve scheduling conventions like `floor` node affinity and `TZ=Europe/Zurich` where already used.
 
 ## Architecture
-- Single chart in `helm/` deploys home automation stack components (Home Assistant, ESPHome, Zigbee2MQTT, Mosquitto, Pi-hole, UniFi, ChangeDetection, ingress, cert issuer, DuckDNS cronjobs).
+- Single chart in `helm/` deploys home automation stack components (Home Assistant, ESPHome, Zigbee2MQTT, Mosquitto, Pi-hole, UniFi Network Application + its MongoDB, ChangeDetection, ingress, cert issuer, DuckDNS cronjobs).
 - Routing and TLS are centralized in `helm/templates/ingress.yaml` with cert-manager integration via `helm/templates/clusterissuer-letsencrypt.yaml`.
 - External DNS refresh is handled by `helm/templates/cron-duckdns.yaml`.
 - Runtime is node-coupled in multiple services via `hostPath`, USB/device mounts, and fixed `NodePort` services.
@@ -22,7 +22,7 @@
   - `helm lint helm/`
   - `helm template home helm/`
 - Deploy chart (local/CI pattern from `readme.md` and `.github/workflows/build_and_deploy.yml`):
-  - `helm upgrade home helm/ --install --namespace default --create-namespace --set letsencrypt.email=... --set duckdnstoken=... --set hostnamepantry=... --set hostnamepantryapi=... --set hostnamehomeassistant=... --set esphome.password=...`
+  - `helm upgrade home helm/ --install --namespace default --create-namespace --set letsencrypt.email=... --set duckdnstoken=... --set hostnamepantry=... --set hostnamepantryapi=... --set hostnamehomeassistant=... --set esphome.password=... --set unifi.mongoPassword=... --set unifi.mongoRootPassword=...`
 - No automated unit/integration test suite is defined in this repository; do not invent test commands.
 
 ## Project Conventions
