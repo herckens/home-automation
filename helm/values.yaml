@@ -45,3 +45,18 @@ matterServer:
   image:
     # https://github.com/matter-js/matterjs-server/pkgs/container/matterjs-server/versions?filters%5Bversion_type%5D=tagged
     tag: 1.4.0
+hermes:
+  image:
+    # https://hub.docker.com/r/nousresearch/hermes-agent/tags
+    tag: v0.22.5
+  model: glm-5.3-flash
+  baseUrl: https://code.myai.swisscom.ch/v1
+  # Set via --set hermes.apiKey=... / telegramBotToken / telegramAllowedUsers /
+  # hassToken / dashboardUser / dashboardPassword / dashboardSecret
+  apiKey: ""
+  telegramBotToken: ""
+  telegramAllowedUsers: ""
+  hassToken: ""
+  dashboardUser: ""
+  dashboardPassword: ""
+  dashboardSecret: ""

@@ -34,4 +34,11 @@ jobs:
           --set cloudflare.zoneId=${{ secrets.CLOUDFLARE_ZONE_ID }} \
           --set cloudflare.recordId=${{ secrets.CLOUDFLARE_RECORD_ID }} \
           --set cloudflare.recordName=${{ secrets.CLOUDFLARE_RECORD_NAME }} \
-          --set cloudflare.proxied=false
+          --set cloudflare.proxied=false \
+          --set hermes.apiKey=${{ secrets.HERMES_API_KEY }} \
+          --set hermes.telegramBotToken=${{ secrets.HERMES_TELEGRAM_BOT_TOKEN }} \
+          --set-string hermes.telegramAllowedUsers=${{ secrets.HERMES_TELEGRAM_ALLOWED_USERS }} \
+          --set hermes.hassToken=${{ secrets.HERMES_HASS_TOKEN }} \
+          --set hermes.dashboardUser=${{ secrets.HERMES_DASHBOARD_USER }} \
+          --set hermes.dashboardPassword=${{ secrets.HERMES_DASHBOARD_PASSWORD }} \
+          --set hermes.dashboardSecret=${{ secrets.HERMES_DASHBOARD_SECRET }}
