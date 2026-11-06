@@ -127,9 +127,9 @@ spec:
           name: dashboard
         resources:
           limits:
-            memory: "1Gi"
+            memory: "1.5Gi"
           requests:
-            memory: "256Mi"
+            memory: "1Gi"
         volumeMounts:
         - name: hermes
           mountPath: /opt/data
