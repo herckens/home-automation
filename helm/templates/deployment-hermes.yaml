@@ -47,24 +47,24 @@ spec:
         app: hermes
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: configure-model
-        image: nousresearch/hermes-agent:{{ .Values.hermes.image.tag }}
-        args:
-        - sh
-        - -c
-        - >-
-          hermes config set model.provider custom &&
-          hermes config set model.base_url "$MODEL_BASE_URL" &&
-          hermes config set model.default "$MODEL_NAME"
-        env:
-        - name: MODEL_BASE_URL
-          value: {{ .Values.hermes.baseUrl | quote }}
-        - name: MODEL_NAME
-          value: {{ .Values.hermes.model | quote }}
-        volumeMounts:
-        - name: hermes
-          mountPath: /opt/data
+      # initContainers:
+      # - name: configure-model
+      #   image: nousresearch/hermes-agent:{{ .Values.hermes.image.tag }}
+      #   args:
+      #   - sh
+      #   - -c
+      #   - >-
+      #     hermes config set model.provider custom &&
+      #     hermes config set model.base_url "$MODEL_BASE_URL" &&
+      #     hermes config set model.default "$MODEL_NAME"
+      #   env:
+      #   - name: MODEL_BASE_URL
+      #     value: {{ .Values.hermes.baseUrl | quote }}
+      #   - name: MODEL_NAME
+      #     value: {{ .Values.hermes.model | quote }}
+      #   volumeMounts:
+      #   - name: hermes
+      #     mountPath: /opt/data
       containers:
       - name: hermes
         image: nousresearch/hermes-agent:{{ .Values.hermes.image.tag }}
@@ -76,14 +76,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
-        # The key is only sent to this exact origin, which must match model.base_url.
-        - name: OPENAI_BASE_URL
-          value: {{ .Values.hermes.baseUrl | quote }}
-        - name: OPENAI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: hermes
-              key: apiKey
+        # # The key is only sent to this exact origin, which must match model.base_url.
+        # - name: OPENAI_BASE_URL
+        #   value: {{ .Values.hermes.baseUrl | quote }}
+        # - name: OPENAI_API_KEY
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: hermes
+        #       key: apiKey
         - name: TELEGRAM_BOT_TOKEN
           valueFrom:
             secretKeyRef:
