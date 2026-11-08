@@ -25,6 +25,7 @@ stringData:
   dashboardUser: {{ required "hermes.dashboardUser is required" .Values.hermes.dashboardUser | quote }}
   dashboardPassword: {{ required "hermes.dashboardPassword is required" .Values.hermes.dashboardPassword | quote }}
   dashboardSecret: {{ required "hermes.dashboardSecret is required" .Values.hermes.dashboardSecret | quote }}
+  copilotGithubToken: {{ required "hermes.copilotGithubToken is required" .Values.hermes.copilotGithubToken | quote }}
 
 ---
 apiVersion: apps/v1
@@ -101,6 +102,11 @@ spec:
             secretKeyRef:
               name: hermes
               key: hassToken
+        - name: COPILOT_GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hermes
+              key: copilotGithubToken
         - name: HERMES_DASHBOARD
           value: "1"
         - name: HERMES_DASHBOARD_HOST

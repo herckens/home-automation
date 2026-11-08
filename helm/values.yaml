@@ -52,7 +52,7 @@ hermes:
   model: glm-5.3-flash
   baseUrl: https://code.myai.swisscom.ch/v1
   # Set via --set hermes.apiKey=... / telegramBotToken / telegramAllowedUsers /
-  # hassToken / dashboardUser / dashboardPassword / dashboardSecret
+  # hassToken / dashboardUser / dashboardPassword / dashboardSecret / copilotGithubToken
   apiKey: ""
   telegramBotToken: ""
   telegramAllowedUsers: ""
@@ -60,3 +60,4 @@ hermes:
   dashboardUser: ""
   dashboardPassword: ""
   dashboardSecret: ""
+  copilotGithubToken: ""

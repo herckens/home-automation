@@ -41,4 +41,5 @@ jobs:
           --set hermes.hassToken=${{ secrets.HERMES_HASS_TOKEN }} \
           --set hermes.dashboardUser=${{ secrets.HERMES_DASHBOARD_USER }} \
           --set hermes.dashboardPassword=${{ secrets.HERMES_DASHBOARD_PASSWORD }} \
-          --set hermes.dashboardSecret=${{ secrets.HERMES_DASHBOARD_SECRET }}
+          --set hermes.dashboardSecret=${{ secrets.HERMES_DASHBOARD_SECRET }} \
+          --set hermes.copilotGithubToken=${{ secrets.HERMES_COPILOT_GITHUB_TOKEN }}
