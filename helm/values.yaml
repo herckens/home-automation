@@ -48,7 +48,7 @@ matterServer:
 hermes:
   image:
     # https://hub.docker.com/r/nousresearch/hermes-agent/tags
-    tag: v0.22.5
+    tag: v0.23.0
   model: glm-5.3-flash
   baseUrl: https://code.myai.swisscom.ch/v1
   # Set via --set hermes.apiKey=... / telegramBotToken / telegramAllowedUsers /
