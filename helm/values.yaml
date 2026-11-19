@@ -40,11 +40,11 @@ thread:
   otbr:
     image:
       # https://hub.docker.com/r/openthread/border-router/tags
-      tag: v2026.10.0
+      tag: v2026.11.0
 matterServer:
   image:
     # https://github.com/matter-js/matterjs-server/pkgs/container/matterjs-server/versions?filters%5Bversion_type%5D=tagged
-    tag: 1.4.0
+    tag: 1.6.0
 hermes:
   image:
     # https://hub.docker.com/r/nousresearch/hermes-agent/tags
