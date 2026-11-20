@@ -61,3 +61,19 @@ spec:
     - secretName: homeassistant-tls
       hosts:
         - {{ .Values.hostnamehomeassistant }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-tailscale
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: homeassistant
+      port:
+        number: 8123
+  tls:
+  - hosts:
+    - homeassistant
