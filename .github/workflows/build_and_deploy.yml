@@ -11,6 +11,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Tailscale Operator Release
+      # For Helm chart versions, check: https://pkgs.tailscale.com/helmcharts/index.yaml
+      # Tailscale client versions: https://tailscale.com/changelog#client
+      run: |
+        helm repo add tailscale https://pkgs.tailscale.com/helmcharts --force-update
+        helm repo update tailscale
+        helm upgrade \
+          tailscale-operator tailscale/tailscale-operator \
+          --install \
+          --namespace tailscale \
+          --create-namespace \
+          --version 1.104.7 \
+          --set-string oauth.clientId="${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}" \
+          --set-string oauth.clientSecret="${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}" \
+          --wait
+
     - name: Helm Release
       run: |
         helm upgrade \
